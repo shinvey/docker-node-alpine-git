@@ -14,13 +14,13 @@ jobs:
       matrix:
         docker-file:
           - path: 14
-            tags: "14 fermium"
+            tags: "14-v1 fermium"
             platforms: linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/arm/v7,linux/arm/v6
           - path: 16
-            tags: "16 gallium"
+            tags: "16-v1 gallium"
             platforms: linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/arm/v7,linux/arm/v6
           - path: 18
-            tags: "18 hydrogen latest"
+            tags: "18-v1 hydrogen latest"
             platforms: linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/arm/v7,linux/arm/v6
 
     steps:
