@@ -62,16 +62,14 @@ jobs:
 
       - name: Test Docker image
         run: |
-          docker run -i ${{ steps.prepare.outputs.IMAGE_WITH_TAG }} /bin/sh -c "
-            echo node version $(node --version);
-            echo npm version $(npm --version);
-            echo yarn version $(yarn --version);
-            git --version;
-            git lfs --version;
-          "
-
-      - name: Clear
-        run: rm -f ${HOME}/.docker/config.json
+          list_tools_version () {
+            echo node version $(node --version)
+            echo npm version $(npm --version)
+            echo yarn version $(yarn --version)
+            git --version
+            git lfs --version
+          }
+          docker run -i ${{ steps.prepare.outputs.IMAGE_WITH_TAG }} /bin/sh -c "$(declare -f list_tools_version);list_tools_version"
 
   readme:
     runs-on: ubuntu-latest
