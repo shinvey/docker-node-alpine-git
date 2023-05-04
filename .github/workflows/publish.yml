@@ -5,12 +5,13 @@ on:
     branches:
       - master
 
+env:
+  DOCKER_IMAGE: shinvey/node-alpine-git
+  BUILD_VERSION: v1
+
 jobs:
   publish:
     runs-on: ubuntu-latest
-    env:
-      DOCKER_IMAGE: shinvey/node-alpine-git
-      BUILD_VERSION: v1
     strategy:
       matrix:
         node_image_tag: [14-alpine,16-alpine,18-alpine]
@@ -23,8 +24,13 @@ jobs:
       - name: Prepare
         id: prepare
         run: |
+          array_join () {
+            # How can I join elements of an array in Bash? https://stackoverflow.com/a/17841619/7561296
+            local IFS="$1"; shift; echo "$*";
+          }
+          _COMPOSED_TAG=$(array_join - ${{ matrix.node_image_tag }} ${{ matrix.lib }} ${{ env.BUILD_VERSION }})
           # Setting an output parameter https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter
-          echo "IMAGE_WITH_TAG=${{ env.DOCKER_IMAGE }}:${{ matrix.node_image_tag }}-${{ matrix.lib }}-${{ env.BUILD_VERSION }}" >> "$GITHUB_OUTPUT"
+          echo "IMAGE_WITH_TAG=${{ env.DOCKER_IMAGE }}:$_COMPOSED_TAG" >> "$GITHUB_OUTPUT"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -55,7 +61,28 @@ jobs:
         run: docker buildx imagetools inspect ${{ steps.prepare.outputs.IMAGE_WITH_TAG }}
 
       - name: Test Docker image
-        run: docker run -i ${{ steps.prepare.outputs.IMAGE_WITH_TAG }} /bin/sh -c "node --version && npm --version && git --version"
+        run: |
+          docker run -i ${{ steps.prepare.outputs.IMAGE_WITH_TAG }} /bin/sh -c "
+            echo node version $(node --version);
+            echo npm version $(npm --version);
+            echo yarn version $(yarn --version);
+            git --version;
+            git lfs --version;
+          "
 
       - name: Clear
         run: rm -f ${HOME}/.docker/config.json
+
+  readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Push README to Dockerhub
+        uses: christian-korneck/update-container-description-action@v1
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASS: ${{ secrets.DOCKER_PASSWORD }}
+        with:
+          destination_container_repo: ${{ env.DOCKER_IMAGE }}
+          provider: dockerhub
