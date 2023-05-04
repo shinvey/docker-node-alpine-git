@@ -1,8 +1,8 @@
 # Node.js with Git Dockerfile
 
-[![Docker Automated build](https://img.shields.io/docker/automated/timbru31/node-alpine-git.svg)](https://hub.docker.com/r/timbru31/node-alpine-git/)
-[![buildx Status](https://github.com/timbru31/docker-node-alpine-git/workflows/buildx/badge.svg)](https://github.com/timbru31/docker-node-alpine-git/actions?query=workflow%3Abuildx)
-[![Lint Dockerfiles](https://github.com/timbru31/docker-node-alpine-git/workflows/Lint%20Dockerfiles/badge.svg)](https://github.com/timbru31/docker-node-alpine-git/actions?query=workflow%3A%22Lint+Dockerfiles%22)
+[![Docker Automated build](https://img.shields.io/docker/automated/shinvey/node-alpine-git.svg)](https://hub.docker.com/r/shinvey/node-alpine-git/)
+[![publish Status](https://github.com/shinvey/docker-node-alpine-git/workflows/Publish/badge.svg)](https://github.com/shinvey/docker-node-alpine-git/actions?query=workflow%3APublish)
+[![Lint Dockerfiles](https://github.com/shinvey/docker-node-alpine-git/workflows/Lint%20Dockerfiles/badge.svg)](https://github.com/shinvey/docker-node-alpine-git/actions?query=workflow%3A%22Lint+Dockerfiles%22)
 
 A minimal Dockerfile based on Node.js 14 LTS (Fermium), Node.js 16 LTS (Gallium) or Node.js 18 LTS (Hydrogen) alpine with Git and ssh installed.
 
