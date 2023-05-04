@@ -69,7 +69,7 @@ jobs:
             git --version
             git lfs --version
           }
-          docker run -i ${{ steps.prepare.outputs.IMAGE_WITH_TAG }} /bin/sh -c "$(declare -f list_tools_version);list_tools_version"
+          docker run --rm -i ${{ steps.prepare.outputs.IMAGE_WITH_TAG }} /bin/sh -c "$(declare -f list_tools_version);list_tools_version"
 
   readme:
     runs-on: ubuntu-latest
